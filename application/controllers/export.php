@@ -127,7 +127,7 @@ class Export extends MY_Controller {
 	
 		// List
 		else if ($type == 'list') {
-			$size = $redis -> lSize($key);
+			$size = $redis -> lLen($key);
 			$result = array();	
 			for ($i = 0; $i < $size; $i++) {
 				$result[] = 'RPUSH "' . addslashes($key) . '" "' . addslashes($redis -> lGet($key,  $i)) . '"';
@@ -192,7 +192,7 @@ class Export extends MY_Controller {
 	
 		// List
 		else if ($type == 'list') {
-			$size  = $redis -> lSize($key);
+			$size  = $redis -> lLen($key);
 			$value = array();
 	
 			for ($i = 0; $i < $size; ++$i) {

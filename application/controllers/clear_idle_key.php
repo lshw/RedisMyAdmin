@@ -86,7 +86,7 @@ class Clear_idle_key extends MY_Controller {
 			foreach($redis_keys as $key) {
 				$t = $redis -> object('idletime', $key);
 				if ( $t >= $idle_time ) {
-					$redis -> delete($key);
+					$redis -> del($key);
 					$affected += 1;
 				}
 			}

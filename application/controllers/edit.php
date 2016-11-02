@@ -133,7 +133,7 @@ class Edit extends MY_Controller {
 			
 		} elseif ( $type == 'list' ) {
 			//list
-			$size = $redis -> lSize($key);
+			$size = $redis -> lLen($key);
 			
 			$index = get_post_arg('index', NULL, 'trim');
 			($index === NULL) && ($index = '');
@@ -174,7 +174,7 @@ class Edit extends MY_Controller {
 			if ( ( $value != $old_value )
 				|| ( $score != $old_score ) 
 			){
-				$redis -> zDelete($key, $old_value);
+				$redis -> zRem($key, $old_value);
 				$redis -> zAdd($key, $score, $value);
 				
 			}
