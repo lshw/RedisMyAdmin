@@ -45,6 +45,36 @@ class MY_Controller extends CI_Controller {
 				$this -> _auth_check();
 			}
 		}
+
+		//=================增加只读判断 add by binyan.li
+		if( config_item('readonly') ){
+			$stopLabel= FALSE;
+			$deny_operater= config_item('deny_operater');
+			if( is_array($deny_operater) && count($deny_operater)>0 ){
+				if( in_array(get_arg('c'), $deny_operater) ){
+					$stopLabel= TRUE;
+					//die("当前开启了只读功能，不允许进行此操作。");
+				}
+			} else {
+				$stopLabel= TRUE;
+				//die("未定义禁止操作列表。");
+			}
+
+			if($stopLabel==TRUE){
+				$key = get_arg('key');
+				$tree = get_arg('tree');
+				if ( ( $key !== NULL ) && ( $key !== '' ) ){
+					$url = manager_site_url('view', 'index', 'key=' . urlencode($key));
+					die($url);
+
+				} elseif ( ( $tree !== NULL ) && ( $this -> is_post() ) ){
+					$url = manager_site_url('index', 'overview');
+					die($url);
+				}
+				die('抱歉，该操作不被允许！');
+			}
+		}
+		//===================
 		
 		/*
 		 * 服务器列表

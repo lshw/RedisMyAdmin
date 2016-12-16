@@ -3,6 +3,10 @@
 $config['project_name'] = 'RedisMyAdmin';
 $config['version'] = '0.4.2';
 
+if( defined('READONLY_SWITCH') && READONLY_SWITCH==TRUE ){
+	$config['project_name'].=  '-只读开启';
+}
+
 /**
  * PHP执行时间
  * set_time_limit(xxx);

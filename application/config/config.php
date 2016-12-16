@@ -360,3 +360,28 @@ $config['proxy_ips'] = '';
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */
+
+
+//================== Readonly switch add by binyan.li
+define('READONLY_SWITCH', TRUE);
+//define('READONLY_SWITCH', FALSE);
+$config['readonly'] = READONLY_SWITCH;
+$config['deny_operater']= array(
+  'none',
+//== 下方为放行方法
+//	'delete',  //删除键
+//	'rename',  //修改键名
+//	'edit',  //查看/修改键值
+//	'ttl',  //存活时间查看/修改
+//	'save',  //保存
+//	'import',  //导入键值
+//	'clear_idle_key',
+//	'export',  //导出键值
+//	'idle',
+//	'overview',  //统计信息
+//	'info',  //统计信息
+//	'view',  //查看各类型数据（string/hash/set/zset/list）
+//	'index', //首页
+//	'key',   //列出键值
+);
+//==================

@@ -21,7 +21,7 @@ $config['seccode_enable'] = FALSE;
 /*
  * 验证码语言 en=英文  cn=中文
  */
-$config['seccode_lang'] = 'en';
+$config['seccode_lang'] = 'cn';
 
 /*
  * 验证码字数 默认为4, 
