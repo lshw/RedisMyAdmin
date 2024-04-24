@@ -7,7 +7,7 @@ $redis = new Redis();?>
 		<select id="server">
 			<?php
 				foreach ($server_list as $i => $srv) {
-					if($_GET['server_id'] == $i) {
+					if($_GET['server_id'] == $i or $i == 0) {
 						$redis -> connect($srv['host'],$srv['port']);
 						if($srv['auth']) $redis -> auth($srv['auth']);
 					}
