@@ -16,6 +16,13 @@ class Delete extends MY_Controller {
 	public function index()
 	{
 		$key = get_arg('key');
+
+		if(strpos($key,"\\")){
+			$key_raw = urldecode(strtr($key, array('\x'=>'%')));
+		} else {
+                        $key_raw = $key;
+                }
+
 		$type = strtolower( get_arg('type') );
 		$allow_type = array('' ,'string', 'hash', 'list', 'set', 'zset');
 		
@@ -24,7 +31,7 @@ class Delete extends MY_Controller {
 			&& ( $key !== '' )
 			&& ( in_array($type, $allow_type) )
 		){
-			$this -> _delete_key($type, $key);
+			$this -> _delete_key($type, $key_raw);
 			
 			$url = manager_site_url('view', 'index', 'key=' . urlencode($key));
 			die($url);

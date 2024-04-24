@@ -26,8 +26,14 @@ class Ttl extends MY_Controller {
 			show_error('没有找到参数Key');
 		}
 		
+		if(strpos($key,"\\")){
+			$key_raw = urldecode(strtr($key, array('\x'=>'%')));
+		} else {
+                        $key_raw = $key;
+                }
+
 		$redis = $this -> redis_model -> get_redis_instance();
-		$key_exists = $redis -> exists($key);
+		$key_exists = $redis -> exists($key_raw);
 		if ( ! $key_exists ) {
 			show_error('Key[' . $key . ']不存在');
 		}
@@ -48,9 +54,15 @@ class Ttl extends MY_Controller {
 	{
 		$key = get_post_arg('key');
 		
+		if(strpos($key,"\\")){
+			$key_raw = urldecode(strtr($key, array('\x'=>'%')));
+		} else {
+                        $key_raw = $key;
+                }
+
 		$redis = $this -> redis_model -> get_redis_instance();
 		
-		$key_exists = $redis -> exists($key);
+		$key_exists = $redis -> exists($key_raw);
 		
 		if ( ! $key_exists ) {
 			show_error('Key[' . $key . ']不存在');			
@@ -58,9 +70,9 @@ class Ttl extends MY_Controller {
 		
 		$ttl = get_post_arg('ttl');
 		if ( $ttl == '-1' ) {
-			$redis -> persist($key);
+			$redis -> persist($key_raw);
 		} else {
-			$redis -> expire($key, $ttl);
+			$redis -> expire($key_raw, $ttl);
 		}
 			
 		$url = manager_site_url('view', 'index', 'key=' . urlencode($key));

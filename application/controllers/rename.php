@@ -25,14 +25,20 @@ class Rename extends MY_Controller {
 			show_error('没有找到参数Key');
 		}
 		
+		if(strpos($key,"\\")){
+			$key_raw = urldecode(strtr($key, array('\x'=>'%')));
+		} else {
+                        $key_raw = $key;
+                }
+
 		$redis = $this -> redis_model -> get_redis_instance();
-		$key_exists = $redis -> exists($key);
+		$key_exists = $redis -> exists($key_raw);
 		if ( ! $key_exists ) {
 			show_error('Key[' . $key . ']不存在');
 		}
 		
 		$page_data = $this -> get_default_page_data();
-		$page_data['key'] = $key;
+		$page_data['key'] = $key_raw;
 		$page_data['title'] = '重命名Key[' . $key . ']';
 		
 		$this -> load -> view('rename', $page_data);
@@ -49,17 +55,23 @@ class Rename extends MY_Controller {
 			show_error('没有找到新键名参数key');
 		}
 		
+		if(strpos($old_key,"\\")){
+			$old_key_raw = urldecode(strtr($old_key, array('\x'=>'%')));
+		} else {
+                        $old_key_raw = $old_key;
+                }
+
 		if ( strlen($key) > MAX_KEY_LEN ) {
 			show_error('Key长度[' . strlen($key) . ']超过限制，当前限制为[' . MAX_KEY_LEN . ']');
 		}
 		
 		$redis = $this -> redis_model -> get_redis_instance();		
-		$key_exists = $redis -> exists($old_key);		
+		$key_exists = $redis -> exists($old_key_raw);
 		if ( ! $key_exists ) {
 			show_error('Key[' . $old_key . ']不存在');
 		}
 		
-		$redis -> rename($old_key, $key);
+		$redis -> rename($old_key_raw, $key);
 		
 		$url = manager_site_url('view', 'index', 'key=' . urlencode($key));
 		Header('Location:' . $url);

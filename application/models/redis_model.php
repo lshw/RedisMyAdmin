@@ -207,7 +207,11 @@ class Redis_Model extends CI_Model {
 			$keys = $this -> _redis -> keys($scan_prefix);
 			$iterator = 0;
 		}
-
+                foreach($keys as $key => $value) {
+                        if(!mb_check_encoding($value, 'UTF-8') || strpos($value, "%") !== false) {
+				$keys[$key]=strtr(urlencode($value), array('%3A'=>':', '%3a'=>':', ' %'=>'\x', ' '=>'\x20'));
+			}
+                }
 		if ( $need_sort ) {
 			sort($keys);	
 		}
