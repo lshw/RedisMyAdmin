@@ -57,6 +57,7 @@ class Overview extends MY_Controller {
 			$can_connect = FALSE;
 			try {
 				$can_connect = $redis -> connect($server['host'], $server['port'], 0.5);
+				if($server['auth']) $redis -> auth($server['auth']);
 			} catch (Exception $e) {
 				$can_connect = TRUE;
 			}
