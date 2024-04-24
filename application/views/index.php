@@ -1,10 +1,17 @@
-<?php PagerWidget::header(); ?>
+<?php PagerWidget::header();
+$redis = new Redis();?>
 
 <div id="sidebar">
 	<h1 class="logo"><a href="<?= manager_site_url('overview', 'index'); ?>"><?= $project_name; ?></a></h1>
 	<p>
 		<select id="server">
-			<?php foreach ($server_list as $i => $srv) { ?>
+			<?php
+				foreach ($server_list as $i => $srv) {
+					if($_GET['server_id'] == $i) {
+						$redis -> connect($srv['host'],$srv['port']);
+						if($srv['auth']) $redis -> auth($srv['auth']);
+					}
+			?>
 			<option value="<?= $i?>" <?= (SERVER_ID == $i) ? 'selected="selected"' : ''?>>
 			<?= isset($srv['name']) ? format_html($srv['name']) : $srv['host'].':'.$srv['port']?>
 			</option>
@@ -17,6 +24,7 @@
 			<?php for($i = 0; $i <= 20; $i++){?>
 			<option value="<?= $i?>" <?= (CURRENT_DB == $i) ? 'selected="selected"' : ''?>>
 			<?= $i; ?>
+            <?php $redis -> select($i); echo ": ".$redis -> dbSize(); ?>
 			</option>
 			<?php }?>
 		</select>
