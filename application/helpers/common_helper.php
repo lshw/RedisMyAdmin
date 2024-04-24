@@ -20,9 +20,9 @@ if ( ! function_exists('show_message') )
 
 		header( 'Content-type: text/javascript; charset=UTF-8' );
 		if (isset( $_REQUEST['callback'] ) ) {
-			$response = htmlspecialchars( $_REQUEST['callback'] ).'('.json_encode( $ret_arr ).');';
+			$response = htmlspecialchars( $_REQUEST['callback'] ).'('.json_encode( $ret_arr, JSON_UNESCAPED_UNICODE ).');';
 		} else {
-			$response = json_encode( $ret_arr );
+			$response = json_encode( $ret_arr, JSON_UNESCAPED_UNICODE);
 		}
 		echo $response;
 		exit;
